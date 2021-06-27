@@ -26,7 +26,7 @@ public class FluxController {
      */
     @GetMapping(value = "/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPages() {
-        final int totalPages = 4;
+        final int totalPages = 5;
         final int elementsPerPage = 5;
 
         return Flux.range(1, totalPages)

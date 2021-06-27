@@ -16,10 +16,10 @@
 
 <div>
   <input type="button" value="Refresh" (click)="getAllPages()">
-  <div *ngIf="loading">
+  <div *ngIf="currentPage != totalPages">
     <progress value="{{currentPage}}" max="{{totalPages}}">{{percentage}}%</progress>
   </div>
-  <div *ngIf="!loading">
+  <div *ngIf="currentPage == totalPages">
     <span>Loading complete:</span>
   </div>
   <table>
