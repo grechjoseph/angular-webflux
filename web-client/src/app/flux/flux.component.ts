@@ -12,6 +12,7 @@ export class FluxComponent implements OnInit {
   elements: any[] = [];
   currentPage: number = 1;
   totalPages: number = 100;
+  hideLoadingBar = false;
 
   constructor(private fluxService: FluxService, private changeDetector: ChangeDetectorRef) { }
 
@@ -30,6 +31,7 @@ export class FluxComponent implements OnInit {
     this.elements = [];
     this.currentPage = 1;
     this.totalPages = 100;
+    this.hideLoadingBar = false;
 
     console.log("Subscribing...");
     this.currentSubscription = this.fluxService.getAllPages().subscribe(page => {
@@ -38,11 +40,20 @@ export class FluxComponent implements OnInit {
           this.currentPage = page.page;
           this.totalPages = page.totalPages;
 
+          // Add each element from the page to the global list of elements.
           page.elements.forEach(element => {
             this.elements.push(element);
           });
 
           this.changeDetector.detectChanges();
+
+          // If last page, set hideLoadingBar to true with a delay, so that the progress bar shows as 100% for the given delay.
+          if (this.currentPage == this.totalPages) {
+            setTimeout(() => {
+              this.hideLoadingBar = true;
+              this.changeDetector.detectChanges();
+            }, 500);
+          }
         });
   }
 
