@@ -2,18 +2,36 @@
   table, th, td {
     border: 1px solid black;
   }
+
+  div {
+    width: 840px;
+    margin: auto;
+    font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  }
+
+  progress {
+    width: 100%
+  }
 </style>
 
-<span>Loaded: {{percentage}}%</span>
-<table>
-  <thead>
-    <th style="width:25px;">#</th>
-    <th style="width:300px;">fieldOne</th>
-    <th style="width:300px;">fieldTwo</th>
-  </thead>
-  <tr *ngFor="let element of elements; let i = index">
-    <td>{{i+1}}</td>
-    <td>{{element.elementFieldOne}}</td>
-    <td>{{element.elementFieldTwo}}</td>
-  </tr>
-</table>
+<div>
+  <input type="button" value="Refresh" (click)="getAllPages()">
+  <div *ngIf="loading">
+    <progress value="{{currentPage}}" max="{{totalPages}}">{{percentage}}%</progress>
+  </div>
+  <div *ngIf="!loading">
+    <span>Loading complete:</span>
+  </div>
+  <table>
+    <thead>
+      <th style="width:40px;">#</th>
+      <th style="width:400px;">fieldOne</th>
+      <th style="width:400px;">fieldTwo</th>
+    </thead>
+    <tr *ngFor="let element of elements; let i = index">
+      <td>{{i+1}}</td>
+      <td>{{element.elementFieldOne}}</td>
+      <td>{{element.elementFieldTwo}}</td>
+    </tr>
+  </table>
+</div>

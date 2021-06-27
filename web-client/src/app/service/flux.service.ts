@@ -16,7 +16,6 @@ export class FluxService {
 
       eventSource.onmessage = event => {
           let json = JSON.parse(event.data);
-          console.log(json);
           observer.next(json);
       };
       eventSource.onerror = (error) => {

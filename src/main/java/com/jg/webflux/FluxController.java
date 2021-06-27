@@ -26,7 +26,10 @@ public class FluxController {
      */
     @GetMapping(value = "/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPages() {
-        return Flux.range(1, 5)
+        final int totalPages = 4;
+        final int elementsPerPage = 5;
+
+        return Flux.range(1, totalPages)
                 .map(pageNumber -> {
                     /*
                         Whatever happens here is done sequentially, ie: each page is processed (garbage collected) before
@@ -34,7 +37,7 @@ public class FluxController {
                      */
                     log.debug("Getting page: {}", pageNumber);
                     sleep(500L);
-                    final Page pageToPublishg = getPage(pageNumber, 3, 5);
+                    final Page pageToPublishg = getPage(pageNumber, elementsPerPage, totalPages);
                     log.debug("Publishing page: {}", pageNumber);
                     sleep(500L);
                     return pageToPublishg;
