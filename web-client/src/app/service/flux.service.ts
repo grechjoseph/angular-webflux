@@ -8,7 +8,7 @@ export class FluxService {
 
   constructor() { }
 
-  public getAllPages(): Observable<Element[]> {
+  public getAllPages(): Observable<any> {
     console.log("Starting getAllPages.");
     return new Observable((observer) => {
       let url = 'http://localhost:8080/flux';
@@ -17,7 +17,7 @@ export class FluxService {
       eventSource.onmessage = event => {
           let json = JSON.parse(event.data);
           console.log(json);
-          observer.next(json['elements']);
+          observer.next(json);
       };
       eventSource.onerror = (error) => {
           if(eventSource.readyState === 0) {
