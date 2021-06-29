@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SSE } from 'sse.js';
 
@@ -7,7 +7,8 @@ export class FluxService {
 
   eventSource: any = window['EventSource'];
 
-  constructor() { }
+  // NgZone ensures that changes are detected by the angular zone.
+  constructor(private _zone: NgZone) { }
 
   public getEventSourceObservable(): Observable<any> {
     console.log("Starting getEventSourceObservable.");
@@ -17,15 +18,15 @@ export class FluxService {
 
       eventSource.onmessage = event => {
           let json = JSON.parse(event.data);
-          observer.next(json);
+          this._zone.run(() => observer.next(json));
       };
       eventSource.onerror = (error) => {
           if(eventSource.readyState === 0) {
             console.log('The stream has been closed by the server.');
             eventSource.close();
-            observer.complete();
+            this._zone.run(() => observer.complete());
           } else {
-            observer.error('EventSource error: ' + error);
+            this._zone.run(() => observer.error('EventSource error: ' + error));
           }
       }
     });

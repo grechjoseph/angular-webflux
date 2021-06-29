@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FluxService } from '../service/flux.service';
 
 @Component({
@@ -14,7 +14,7 @@ export class FluxComponent implements OnInit {
   totalPages: number = 100;
   hideLoadingBar = false;
 
-  constructor(private fluxService: FluxService, private changeDetector: ChangeDetectorRef) { }
+  constructor(private fluxService: FluxService) { }
 
   ngOnInit() {
     this.getAllPages();
@@ -47,13 +47,10 @@ export class FluxComponent implements OnInit {
             this.elements.push(element);
           });
 
-          this.changeDetector.detectChanges();
-
           // If last page, set hideLoadingBar to true with a delay, so that the progress bar shows as 100% for the given delay.
           if (this.currentPage == this.totalPages) {
             setTimeout(() => {
               this.hideLoadingBar = true;
-              this.changeDetector.detectChanges();
             }, 500);
           }
         });
