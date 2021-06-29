@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FluxService } from '../service/flux.service';
+import { Observable } from 'rxjs';
+import { Page } from '../model/page.model';
+import { PageElement } from '../model/page-element.model';
+import { PostRequest } from '../model/post-request.model';
 
 @Component({
   selector: 'app-flux',
@@ -9,7 +13,7 @@ import { FluxService } from '../service/flux.service';
 export class FluxComponent implements OnInit {
 
   currentSubscription;
-  elements: any[] = [];
+  elements: PageElement[];
   currentPage: number = 1;
   totalPages: number = 100;
   hideLoadingBar = false;
@@ -30,7 +34,7 @@ export class FluxComponent implements OnInit {
     this.handleObservable(this.fluxService.getSseObservable());
   }
 
-  private handleObservable(observable: any): void {
+  private handleObservable(observable: Observable<Page>): void {
     console.log("Getting pages.");
     if (this.currentSubscription) {
     console.log("Unsubscribing from previous subscription.");

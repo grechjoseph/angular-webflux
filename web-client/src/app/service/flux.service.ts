@@ -1,6 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SSE } from 'sse.js';
+import { Page } from '../model/page.model';
+import { PageElement } from '../model/page-element.model';
+import { PostRequest } from '../model/post-request.model';
 
 @Injectable()
 export class FluxService {
@@ -10,15 +13,15 @@ export class FluxService {
   // NgZone ensures that changes are detected by the angular zone.
   constructor(private _zone: NgZone) { }
 
-  public getEventSourceObservable(): Observable<any> {
+  public getEventSourceObservable(): Observable<Page> {
     console.log("Starting getEventSourceObservable.");
     return new Observable((observer) => {
       let url = 'http://localhost:8080/flux';
       let eventSource = new this.eventSource(url);
 
       eventSource.onmessage = event => {
-          let json = JSON.parse(event.data);
-          this._zone.run(() => observer.next(json));
+          let page: Page = JSON.parse(event.data);
+          this._zone.run(() => observer.next(page));
       };
       eventSource.onerror = (error) => {
           if(eventSource.readyState === 0) {
@@ -34,28 +37,27 @@ export class FluxService {
 
   // A replacement for EventSource in order to support different Http Methods and a Request Body.
   // Requires npm install sse.js.
-  public getSseObservable() : Observable<any> {
+  public getSseObservable() : Observable<Page> {
     console.log("Starting getSseObservable.");
-        return new Observable((observer) => {
-          let url = 'http://localhost:8080/flux';
-          let source = new SSE(url,
-            {headers: {
-              'Content-Type': 'application/json',
-              'other-header-goes-here': 'with-other-value-here'
-            },
-           payload: JSON.stringify({
-              totalPages: 3,
-              elementsPerPage: 3
-           }),
-           method: 'POST'});
+    return new Observable((observer) => {
+      let url = 'http://localhost:8080/flux';
+      let request = new PostRequest(3, 3);
+      console.log("request: " + JSON.stringify(request));
+      let source = new SSE(url,
+        {headers: {
+          'Content-Type': 'application/json',
+          'other-header-goes-here': 'with-other-value-here'
+        },
+       payload: JSON.stringify(request),
+       method: 'POST'});
 
-          source.addEventListener('message', function(event) {
-              let json = JSON.parse(event.data);
-              observer.next(json);
-              });
+      source.addEventListener('message', function(event) {
+          let page: Page = JSON.parse(event.data);
+          observer.next(page);
+          });
 
-          source.stream();
-        });
+      source.stream();
+    });
   }
 
 }
