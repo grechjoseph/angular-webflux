@@ -2,9 +2,13 @@
 <b>com.jg.webflux.FluxController.fluxAllPages</b> simulates publishing 10 pages of Elements with a delay between each.
 
 <h1>Angular Web Client</h1>
-1. ng new web-client.
-2. ng generate service service/flux.
-3. ng generate component flux.
-4. ng generate class model/element --type=model
+<ol>
+    <li>ng new web-client</li>
+    <li>cd web-client</li>
+    <li>npm install sse.js</li>
+    <li>ng generate service service/flux</li>
+    <li>ng generate component flux</li>
+    <li>ng generate class model/element --type=model</li>
+</ol>
 
-<b>app.component.html</b> add <app-flux></app-flux> to include flux component.
+<b>app.component.html</b> add < app-flux >< /app-flux > to include flux component.
