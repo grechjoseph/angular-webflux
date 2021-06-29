@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -26,10 +24,20 @@ public class FluxController {
      */
     @GetMapping(value = "/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPages() {
-        final int totalPages = 5;
-        final int elementsPerPage = 5;
+        return fluxAllPagesPOST(PostRequest.builder()
+                .totalPages(5)
+                .elementsPerPage(5)
+                .build());
+    }
 
-        return Flux.range(1, totalPages)
+    /**
+     * Alternative method of type Http POST which also accepts a Request Body.
+     * @param request The Request Body.
+     * @return Text Event Stream with pages.
+     */
+    @PostMapping(value = "/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Page> fluxAllPagesPOST(@RequestBody final PostRequest request) {
+        return Flux.range(1, request.getTotalPages())
                 .map(pageNumber -> {
                     /*
                         Whatever happens here is done sequentially, ie: each page is processed (garbage collected) before
@@ -37,7 +45,7 @@ public class FluxController {
                      */
                     log.debug("Getting page: {}", pageNumber);
                     sleep(500L);
-                    final Page pageToPublishg = getPage(pageNumber, elementsPerPage, totalPages);
+                    final Page pageToPublishg = getPage(pageNumber, request.getElementsPerPage(), request.getTotalPages());
                     log.debug("Publishing page: {}", pageNumber);
                     sleep(500L);
                     return pageToPublishg;
@@ -63,6 +71,15 @@ public class FluxController {
                 .totalElements(totalPages * pageSize)
                 .elements(IntStream.range(0, pageSize).mapToObj(i -> Element.builder().build()).collect(Collectors.toList()))
                 .build();
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    private static class PostRequest {
+        private int totalPages;
+        private int elementsPerPage;
     }
 
     @Data

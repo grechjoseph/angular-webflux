@@ -34,7 +34,9 @@ export class FluxComponent implements OnInit {
     this.hideLoadingBar = false;
 
     console.log("Subscribing...");
-    this.currentSubscription = this.fluxService.getEventSourceObservable().subscribe(page => {
+    // Choose between getEventSourceObservable or getSseObservable (both return Observable).
+    // this.currentSubscription = this.fluxService.getEventSourceObservable().subscribe(page => {
+    this.currentSubscription = this.fluxService.getSseObservable().subscribe(page => {
           console.log(page);
 
           this.currentPage = page.page;
