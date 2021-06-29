@@ -3,7 +3,6 @@ import { FluxService } from '../service/flux.service';
 import { Observable } from 'rxjs';
 import { Page } from '../model/page.model';
 import { PageElement } from '../model/page-element.model';
-import { PostRequest } from '../model/post-request.model';
 
 @Component({
   selector: 'app-flux',
@@ -21,7 +20,7 @@ export class FluxComponent implements OnInit {
   constructor(private fluxService: FluxService) { }
 
   ngOnInit() {
-    this.getUsingEventSource();
+    this.getUsingSse();
   }
 
   // Subscribed to an Observable derived from the handling of EventSource.

@@ -2,7 +2,6 @@ import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SSE } from 'sse.js';
 import { Page } from '../model/page.model';
-import { PageElement } from '../model/page-element.model';
 import { PostRequest } from '../model/post-request.model';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class FluxService {
       let url = 'http://localhost:8080/flux';
       let eventSource = new this.eventSource(url);
 
-      eventSource.onmessage = event => {
+      eventSource.onmessage = (event) => {
           let page: Page = JSON.parse(event.data);
           this._zone.run(() => observer.next(page));
       };
@@ -43,6 +42,7 @@ export class FluxService {
       let url = 'http://localhost:8080/flux';
       let request = new PostRequest(3, 3);
       console.log("request: " + JSON.stringify(request));
+
       let source = new SSE(url,
         {headers: {
           'Content-Type': 'application/json',
@@ -51,10 +51,9 @@ export class FluxService {
        payload: JSON.stringify(request),
        method: 'POST'});
 
-      source.addEventListener('message', function(event) {
-          let page: Page = JSON.parse(event.data);
-          observer.next(page);
-          });
+      source.onmessage = (event) => {
+        observer.next(JSON.parse(event.data));
+      }
 
       source.stream();
     });
