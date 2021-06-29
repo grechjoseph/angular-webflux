@@ -17,10 +17,20 @@ export class FluxComponent implements OnInit {
   constructor(private fluxService: FluxService) { }
 
   ngOnInit() {
-    this.getAllPages();
+    this.getUsingEventSource();
   }
 
-  getAllPages(): void {
+  // Subscribed to an Observable derived from the handling of EventSource.
+  getUsingEventSource(): void {
+    this.handleObservable(this.fluxService.getEventSourceObservable());
+  }
+
+  // Subscribed to an Observable derived from the handling of SSE. Ideal to use other Http Methods in addition to GET.
+  getUsingSse(): void {
+    this.handleObservable(this.fluxService.getSseObservable());
+  }
+
+  private handleObservable(observable: any): void {
     console.log("Getting pages.");
     if (this.currentSubscription) {
     console.log("Unsubscribing from previous subscription.");
@@ -34,9 +44,7 @@ export class FluxComponent implements OnInit {
     this.hideLoadingBar = false;
 
     console.log("Subscribing...");
-    // Choose between getEventSourceObservable or getSseObservable (both return Observable).
-    // this.currentSubscription = this.fluxService.getEventSourceObservable().subscribe(page => {
-    this.currentSubscription = this.fluxService.getSseObservable().subscribe(page => {
+    this.currentSubscription = observable.subscribe(page => {
           console.log(page);
 
           this.currentPage = page.page;

@@ -15,7 +15,8 @@
 </style>
 
 <div>
-  <input type="button" value="Refresh" (click)="getAllPages()">
+  <input type="button" value="getUsingEventSource()" (click)="getUsingEventSource()">
+  <input type="button" value="getUsingSse()" (click)="getUsingSse()">
   <div *ngIf="!hideLoadingBar">
     <progress value="{{currentPage}}" max="{{totalPages}}">{{percentage}}%</progress>
   </div>
