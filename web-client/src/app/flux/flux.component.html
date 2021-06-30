@@ -18,7 +18,7 @@
   <input type="button" value="getUsingEventSource()" (click)="getUsingEventSource()">
   <input type="button" value="getUsingSse()" (click)="getUsingSse()">
   <div *ngIf="!hideLoadingBar">
-    <progress value="{{currentPage}}" max="{{totalPages}}">{{percentage}}%</progress>
+    <progress value="{{currentPage}}" max="{{totalPages}}"></progress>
   </div>
   <div *ngIf="hideLoadingBar">
     <span>Loading complete:</span>
