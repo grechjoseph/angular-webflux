@@ -1,6 +1,5 @@
 export class PostRequest {
 
-  constructor (public totalPages: number, public elementsPerPage: number) {
-  }
+  constructor (public totalPages: number, public elementsPerPage: number) { }
 
 }
