@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 
-import { FluxModule } from '../flux/flux.module';
+import { FluxModule } from './modules/flux/flux.module';
 
 @NgModule({
   declarations: [
