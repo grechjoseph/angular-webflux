@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Page } from '../model/page.model';
+import { Page } from '../models/page.model';
 
 @Injectable()
 export class EventSourceService {

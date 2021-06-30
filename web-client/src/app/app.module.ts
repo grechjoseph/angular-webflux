@@ -3,24 +3,18 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-import { FluxComponent } from './flux/flux.component';
 
-import { EventSourceService } from './service/event-source.service';
-import { SseService } from './service/sse.service';
-
+import { FluxModule } from '../flux/flux.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    FluxComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FluxModule
   ],
-  providers: [
-    EventSourceService,
-    SseService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

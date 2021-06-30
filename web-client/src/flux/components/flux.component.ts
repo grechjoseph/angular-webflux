@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
-import { EventSourceService } from '../service/event-source.service';
-import { SseService } from '../service/sse.service';
+import { EventSourceService } from '../services/event-source.service';
+import { SseService } from '../services/sse.service';
 
 import { Observable } from 'rxjs';
-import { Page } from '../model/page.model';
-import { PageElement } from '../model/page-element.model';
+import { Page } from '../models/page.model';
+import { PageElement } from '../models/page-element.model';
 
 @Component({
   selector: 'app-flux',

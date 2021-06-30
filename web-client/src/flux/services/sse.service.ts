@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SSE } from 'sse.js';
 
-import { Page } from '../model/page.model';
-import { PostRequest } from '../model/post-request.model';
+import { Page } from '../models/page.model';
+import { PostRequest } from '../models/post-request.model';
 
 @Injectable()
 export class SseService {
