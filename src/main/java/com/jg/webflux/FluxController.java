@@ -37,13 +37,13 @@ public class FluxController {
      */
     @PostMapping(value = "/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPagesPOST(@RequestBody final PostRequest request) {
+        log.debug("Getting all pages.");
         return Flux.range(1, request.getTotalPages())
                 .map(pageNumber -> {
                     /*
                         Whatever happens here is done sequentially, ie: each page is processed (garbage collected) before
                         proceeding to the next page.
                      */
-                    log.debug("Getting page: {}", pageNumber);
                     sleep(500L);
                     final Page pageToPublishg = getPage(pageNumber, request.getElementsPerPage(), request.getTotalPages());
                     log.debug("Publishing page: {}", pageNumber);

@@ -5,7 +5,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { FluxComponent } from './flux/flux.component';
 
-import { FluxService } from './service/flux.service';
+import { EventSourceService } from './service/event-source.service';
+import { SseService } from './service/sse.service';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FluxService } from './service/flux.service';
     BrowserModule
   ],
   providers: [
-    FluxService
+    EventSourceService,
+    SseService
   ],
   bootstrap: [AppComponent]
 })
