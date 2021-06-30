@@ -2,12 +2,10 @@ import { PageElement } from './page-element.model'
 
 export class Page {
 
-  page: number;
-  pageSize: number;
-  totalPages: number;
-  totalElements: number;
-  elements: PageElement[];
-
-  constructor() { }
+  constructor(public page: number,
+              public pageSize: number,
+              public totalPages: number,
+              public totalElements: number,
+              public elements: PageElement[]) { }
 
 }

@@ -1,8 +1,5 @@
 export class PageElement {
 
-  elementFieldOne: string;
-  elementFieldTwo: string;
-
-  constructor() { }
+  constructor(public elementFieldOne: string, public elementFieldTwo: string) { }
 
 }
