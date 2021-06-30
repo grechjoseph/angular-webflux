@@ -45,10 +45,10 @@ public class FluxController {
                         proceeding to the next page.
                      */
                     sleep(500L);
-                    final Page pageToPublishg = getPage(pageNumber, request.getElementsPerPage(), request.getTotalPages());
+                    final Page pageToPublish = getPage(pageNumber, request.getElementsPerPage(), request.getTotalPages());
                     log.debug("Publishing page: {}", pageNumber);
                     sleep(500L);
-                    return pageToPublishg;
+                    return pageToPublish;
                 });
     }
 
