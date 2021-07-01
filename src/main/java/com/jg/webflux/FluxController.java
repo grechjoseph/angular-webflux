@@ -1,9 +1,6 @@
 package com.jg.webflux;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +15,8 @@ import java.util.stream.IntStream;
 
 @Slf4j
 @RestController
-@CrossOrigin("http://localhost:4200")
+@CrossOrigin("*")
+@RequiredArgsConstructor
 public class FluxController {
 
     /**
@@ -58,7 +56,9 @@ public class FluxController {
      */
     @PostMapping(value = "/flux/bridged", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPagesPOSTBridged(@RequestBody final PostRequest request) {
+        log.debug("Initializing WebClient.");
         final WebClient webClient = WebClient.create("http://localhost:8080");
+        log.debug("WebClient initialized.");
         return webClient
                 .post()
                 .uri("/flux")
@@ -69,6 +69,23 @@ public class FluxController {
                     log.debug("Page {} at bridge.", page.getPage());
                     return page;
                 });
+    }
+
+    private final SelfClient selfClient;
+
+    /**
+     * Consuming Flux endpoint using ReactiveFeign.
+     */
+    @PostMapping(value = "/flux/reactive", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Page> fluxAllPagesPOSTReactive(@RequestBody final PostRequest request) {
+        log.debug("Fetching Flux through ReactiveFeign.");
+        final Flux<Page> pageFlux = selfClient.fluxAllPagesPOST(request)
+                .map(page -> {
+                    log.debug("Page {} at reactive.", page.getPage());
+                    return page;
+                });
+        log.debug("Returning Flux retrieved through ReactiveFeign.");
+        return pageFlux;
     }
 
     private void sleep(final long millis) {
@@ -96,7 +113,7 @@ public class FluxController {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    private static class PostRequest {
+    static class PostRequest {
         private int totalPages;
         private int elementsPerPage;
     }
@@ -105,7 +122,7 @@ public class FluxController {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    private static class Page {
+    static class Page {
 
         private int page;
         private int pageSize;
@@ -119,7 +136,7 @@ public class FluxController {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    private static class Element {
+    static class Element {
 
         @Builder.Default
         private UUID elementFieldOne = UUID.randomUUID();
