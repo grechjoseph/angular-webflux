@@ -14,7 +14,7 @@ export class SseService {
   // Requires npm install sse.js.
   public getObservable() : Observable<Page> {
     return new Observable((observer) => {
-      let url = 'http://localhost:8080/flux';
+      let url = 'http://localhost:8080/flux/bridged';
       let requestBody = new PostRequest(3, 3);
       let requestHeaders = {
         'Content-Type': 'application/json',

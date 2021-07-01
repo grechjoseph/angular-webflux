@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
@@ -47,8 +49,25 @@ public class FluxController {
                     sleep(500L);
                     final Page pageToPublish = getPage(pageNumber, request.getElementsPerPage(), request.getTotalPages());
                     log.debug("Publishing page: {}", pageNumber);
-                    sleep(500L);
                     return pageToPublish;
+                });
+    }
+
+    /**
+     * Consuming Flux endpoint using {@link WebClient}.
+     */
+    @PostMapping(value = "/flux/bridged", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Page> fluxAllPagesPOSTBridged(@RequestBody final PostRequest request) {
+        final WebClient webClient = WebClient.create("http://localhost:8080");
+        return webClient
+                .post()
+                .uri("/flux")
+                .body(BodyInserters.fromValue(request))
+                .retrieve()
+                .bodyToFlux(Page.class)
+                .map(page -> {
+                    log.debug("Page {} at bridge.", page.getPage());
+                    return page;
                 });
     }
 
