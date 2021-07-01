@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.SignalType;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -24,6 +26,7 @@ public class FluxController {
      */
     @GetMapping(value = "/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPages() {
+        log.debug("Getting all pages from GET Method.");
         return fluxAllPagesPOST(PostRequest.builder()
                 .totalPages(5)
                 .elementsPerPage(5)
@@ -37,7 +40,7 @@ public class FluxController {
      */
     @PostMapping(value = "/flux", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPagesPOST(@RequestBody final PostRequest request) {
-        log.debug("Getting all pages.");
+        log.debug("Getting all pages from POST Method.");
         return Flux.range(1, request.getTotalPages())
                 .map(pageNumber -> {
                     /*
@@ -56,19 +59,15 @@ public class FluxController {
      */
     @PostMapping(value = "/flux/bridged", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPagesPOSTBridged(@RequestBody final PostRequest request) {
-        log.debug("Initializing WebClient.");
+        log.debug("Getting all pages from WebClient.");
         final WebClient webClient = WebClient.create("http://localhost:8080");
-        log.debug("WebClient initialized.");
         return webClient
                 .post()
                 .uri("/flux")
                 .body(BodyInserters.fromValue(request))
                 .retrieve()
                 .bodyToFlux(Page.class)
-                .map(page -> {
-                    log.debug("Page {} at bridge.", page.getPage());
-                    return page;
-                });
+                .log("bridged-flux", Level.INFO, SignalType.ON_NEXT);
     }
 
     private final SelfClient selfClient;
@@ -78,13 +77,10 @@ public class FluxController {
      */
     @PostMapping(value = "/flux/reactive", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Page> fluxAllPagesPOSTReactive(@RequestBody final PostRequest request) {
-        log.debug("Fetching Flux through ReactiveFeign.");
+        log.debug("Getting all pages from ReactiveFeign.");
         final Flux<Page> pageFlux = selfClient.fluxAllPagesPOST(request)
-                .map(page -> {
-                    log.debug("Page {} at reactive.", page.getPage());
-                    return page;
-                });
-        log.debug("Returning Flux retrieved through ReactiveFeign.");
+                .log("reactive-flux", Level.INFO, SignalType.ON_NEXT);
+        log.debug("Returning Flux retrieved from ReactiveFeign.");
         return pageFlux;
     }
 
