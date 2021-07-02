@@ -6,7 +6,9 @@
 <b>Signal</b>: When a Mono or Flux emits an event, this is also referred to as a Signal.<br/>
 
 <h2>Consuming Flux Endpoint using WebClient</h2>
+
 The code below demonstrates how to use Spring WebClient to consume a Reactive endpoint without waiting for the whole response, but rather translate it to a Flux immediately.
+
 ``` java
 final WebClient webClient = WebClient.create("<url>");
 return webClient
