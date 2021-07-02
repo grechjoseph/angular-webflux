@@ -16,7 +16,9 @@
 
 <div>
   <input type="button" value="getUsingEventSource()" (click)="getUsingEventSource()">
-  <input type="button" value="getUsingSse()" (click)="getUsingSse()">
+  <input type="button" value="getUsingSse() Simple" (click)="getUsingSse('')">
+  <input type="button" value="getUsingSse() WebClient" (click)="getUsingSse('/web-client')">
+  <input type="button" value="getUsingSse() ReactiveFeign" (click)="getUsingSse('/reactive-feign')">
   <div *ngIf="!hideLoadingBar">
     <progress value="{{currentPage}}" max="{{totalPages}}"></progress>
   </div>

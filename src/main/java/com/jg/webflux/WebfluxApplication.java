@@ -1,5 +1,6 @@
 package com.jg.webflux;
 
+import com.jg.webflux.reactivefeign.SelfClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import reactivefeign.spring.config.EnableReactiveFeignClients;

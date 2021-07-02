@@ -23,7 +23,7 @@ export class FluxComponent implements OnInit {
   constructor(private eventSourceService: EventSourceService, private sseService: SseService) { }
 
   ngOnInit() {
-    this.getUsingSse();
+    this.getUsingSse('');
   }
 
   // Subscribed to an Observable derived from the handling of EventSource.
@@ -32,8 +32,8 @@ export class FluxComponent implements OnInit {
   }
 
   // Subscribed to an Observable derived from the handling of SSE. Ideal to use other Http Methods in addition to GET.
-  getUsingSse(): void {
-    this.handleObservable(this.sseService.getObservable());
+  getUsingSse(path: string): void {
+    this.handleObservable(this.sseService.getObservable(path));
   }
 
   private handleObservable(observable: Observable<Page>): void {

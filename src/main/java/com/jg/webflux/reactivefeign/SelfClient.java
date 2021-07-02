@@ -1,5 +1,7 @@
-package com.jg.webflux;
+package com.jg.webflux.reactivefeign;
 
+import com.jg.webflux.dto.Page;
+import com.jg.webflux.dto.PostRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import reactivefeign.spring.config.ReactiveFeignClient;
 import reactor.core.publisher.Flux;
@@ -11,6 +13,6 @@ import reactor.core.publisher.Flux;
 public interface SelfClient {
 
     @PostMapping("/flux")
-    Flux<FluxController.Page> fluxAllPagesPOST(final FluxController.PostRequest request);
+    Flux<Page> fluxAllPagesPOST(final PostRequest request);
 
 }

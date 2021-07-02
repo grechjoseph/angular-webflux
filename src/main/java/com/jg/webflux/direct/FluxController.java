@@ -1,17 +1,14 @@
-package com.jg.webflux;
+package com.jg.webflux.direct;
 
-import lombok.*;
+import com.jg.webflux.dto.Element;
+import com.jg.webflux.dto.Page;
+import com.jg.webflux.dto.PostRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.SignalType;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -54,36 +51,6 @@ public class FluxController {
                 });
     }
 
-    /**
-     * Consuming Flux endpoint using {@link WebClient}.
-     */
-    @PostMapping(value = "/flux/bridged", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Page> fluxAllPagesPOSTBridged(@RequestBody final PostRequest request) {
-        log.debug("Getting all pages from WebClient.");
-        final WebClient webClient = WebClient.create("http://localhost:8080");
-        return webClient
-                .post()
-                .uri("/flux")
-                .body(BodyInserters.fromValue(request))
-                .retrieve()
-                .bodyToFlux(Page.class)
-                .log("bridged-flux", Level.INFO, SignalType.ON_NEXT);
-    }
-
-    private final SelfClient selfClient;
-
-    /**
-     * Consuming Flux endpoint using ReactiveFeign.
-     */
-    @PostMapping(value = "/flux/reactive", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Page> fluxAllPagesPOSTReactive(@RequestBody final PostRequest request) {
-        log.debug("Getting all pages from ReactiveFeign.");
-        final Flux<Page> pageFlux = selfClient.fluxAllPagesPOST(request)
-                .log("reactive-flux", Level.INFO, SignalType.ON_NEXT);
-        log.debug("Returning Flux retrieved from ReactiveFeign.");
-        return pageFlux;
-    }
-
     private void sleep(final long millis) {
         try {
             Thread.sleep(millis);
@@ -103,43 +70,6 @@ public class FluxController {
                 .totalElements(totalPages * pageSize)
                 .elements(IntStream.range(0, pageSize).mapToObj(i -> Element.builder().build()).collect(Collectors.toList()))
                 .build();
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class PostRequest {
-        private int totalPages;
-        private int elementsPerPage;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class Page {
-
-        private int page;
-        private int pageSize;
-        private int totalPages;
-        private int totalElements;
-        private List<Element> elements;
-
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class Element {
-
-        @Builder.Default
-        private UUID elementFieldOne = UUID.randomUUID();
-
-        @Builder.Default
-        private UUID elementFieldTwo = UUID.randomUUID();
-
     }
 
 }

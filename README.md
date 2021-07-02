@@ -1,5 +1,5 @@
 <h1>Spring Web Flux</h1>
-<b>com.jg.webflux.FluxController.fluxAllPages</b> simulates publishing 10 pages of Elements with a delay between each.
+<b>com.jg.webflux.direct.FluxController.fluxAllPages</b> simulates publishing 10 pages of Elements with a delay between each.
 
 <h1>Angular Web Client</h1>
 <ol>

@@ -12,9 +12,9 @@ export class SseService {
 
   // A replacement for EventSource in order to support different Http Methods and a Request Body.
   // Requires npm install sse.js.
-  public getObservable() : Observable<Page> {
+  public getObservable(path: string) : Observable<Page> {
     return new Observable((observer) => {
-      let url = 'http://localhost:8080/flux/reactive';
+      let url = 'http://localhost:8080/flux' + path;
       let requestBody = new PostRequest(3, 3);
       let requestHeaders = {
         'Content-Type': 'application/json',
