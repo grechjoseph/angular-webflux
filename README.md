@@ -3,7 +3,7 @@
 <h2>Running Backend and Frontend</h2>
 <ol>
     <li>Backend: Run the Spring project.</li>
-    <li><b>Frontend: cd web-client && npm install && ng serve -o</b></li>
+    <li>Frontend: <b>cd web-client && npm install && ng serve -o</b></li>
 </ol>
 
 <h2>Common Terms</h2>
