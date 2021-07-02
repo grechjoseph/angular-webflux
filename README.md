@@ -1,5 +1,11 @@
 <h1>Spring Web Flux</h1>
 
+<h2>Running Backend and Frontend</h2>
+<ol>
+    <li>Backend: Run the Spring project.</li>
+    <li><b>Frontend: cd web-client && npm install && ng serve -o</b></li>
+</ol>
+
 <h2>Common Terms</h2>
 <b>Mono< Object ></b>: Implement org.reactivestreams.Publisher. Equivalent of Optional< Object > in webflux. May contain 0..1 elements.<br/>
 <b>Flux< Object ></b>: Implement org.reactivestreams.Publisher. Equivalent of Collection< Object > in webflux. May contain 0..N elements (possibly infinite). <br/>
