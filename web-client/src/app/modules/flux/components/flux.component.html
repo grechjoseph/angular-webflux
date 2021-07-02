@@ -15,7 +15,11 @@
 </style>
 
 <div>
-  <span>{{serverDateTime}}</span>
+  <span>Live Server DateTime: {{serverDateTime}}</span><br/>
+  <hr/>
+  <b>curl -X PUT -H "Content-Type: application/json" -d "add text here" http://localhost:8080</b> to update.<br/>
+  <span>Updatable String: {{latestString}}</span>
+  <hr/>
   <input type="button" value="getUsingEventSource()" (click)="getUsingEventSource()">
   <input type="button" value="getUsingSse() Simple" (click)="getUsingSse('')">
   <input type="button" value="getUsingSse() WebClient" (click)="getUsingSse('/web-client')">

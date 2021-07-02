@@ -9,29 +9,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 @Slf4j
 @RestController
 @CrossOrigin("*")
 @RequiredArgsConstructor
-public class FluxController {
-
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-uuuu");
-
-    @GetMapping(value = "/server-datetime", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> getServerDateTime() {
-        return Flux.zip(
-                Flux.fromStream(Stream.generate(() -> LocalDateTime.now().format(FORMATTER))),
-                Flux.interval(Duration.ofMillis(200)),
-                (key, value) -> key
-        );
-    }
+public class StaticFluxController {
 
     /**
      * A Flux is the counter part of a Collection in Webflux, where it can contain 0..N elements.
@@ -86,5 +71,4 @@ public class FluxController {
                 .elements(IntStream.range(0, pageSize).mapToObj(i -> Element.builder().build()).collect(Collectors.toList()))
                 .build();
     }
-
 }

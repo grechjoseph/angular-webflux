@@ -14,7 +14,8 @@ import { PageElement } from '../models/page-element.model';
 })
 export class FluxComponent implements OnInit {
 
-  serverDateTime: string = "";
+  latestString: string = "Execute curl above.";
+  serverDateTime: string = "default text";
   currentSubscription;
   elements: PageElement[];
   currentPage: number = 1;
@@ -24,8 +25,15 @@ export class FluxComponent implements OnInit {
   constructor(private eventSourceService: EventSourceService, private sseService: SseService) { }
 
   ngOnInit() {
+    this.streamUpdatableString();
     this.streamServerDateTime();
     this.getUsingSse('');
+  }
+
+  private streamUpdatableString() {
+    this.sseService.streamUpdatableString().subscribe(newString => {
+      this.latestString = newString;
+    });
   }
 
   private streamServerDateTime() {

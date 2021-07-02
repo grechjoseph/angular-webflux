@@ -10,6 +10,25 @@ export class SseService {
 
   constructor() { }
 
+  public streamUpdatableString() : Observable<string> {
+    return new Observable((observer) => {
+      let url = 'http://localhost:8080/flux/updatable';
+      let httpMethod = 'GET';
+
+      let request = {
+        method: httpMethod
+      };
+
+      let source = new SSE(url, request);
+
+      source.onmessage = (event) => {
+        observer.next(event.data);
+      }
+
+      source.stream();
+    });
+  }
+
   public streamServerDateTime() : Observable<string> {
     return new Observable((observer) => {
       let url = 'http://localhost:8080/server-datetime';
@@ -56,5 +75,4 @@ export class SseService {
       source.stream();
     });
   }
-
 }
