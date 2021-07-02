@@ -14,6 +14,7 @@ import { PageElement } from '../models/page-element.model';
 })
 export class FluxComponent implements OnInit {
 
+  serverDateTime: string = "";
   currentSubscription;
   elements: PageElement[];
   currentPage: number = 1;
@@ -23,7 +24,14 @@ export class FluxComponent implements OnInit {
   constructor(private eventSourceService: EventSourceService, private sseService: SseService) { }
 
   ngOnInit() {
+    this.streamServerDateTime();
     this.getUsingSse('');
+  }
+
+  private streamServerDateTime() {
+    this.sseService.streamServerDateTime().subscribe(serverDateTime => {
+      this.serverDateTime = serverDateTime;
+    });
   }
 
   // Subscribed to an Observable derived from the handling of EventSource.
@@ -37,20 +45,20 @@ export class FluxComponent implements OnInit {
   }
 
   private handleObservable(observable: Observable<Page>): void {
-      console.log("Getting pages.");
-      if (this.currentSubscription) {
-      console.log("Unsubscribing from previous subscription.");
-        this.currentSubscription.unsubscribe();
-      }
+    console.log("Getting pages.");
+    if (this.currentSubscription) {
+    console.log("Unsubscribing from previous subscription.");
+      this.currentSubscription.unsubscribe();
+    }
 
-      console.log("Resetting values.");
-      this.elements = [];
-      this.currentPage = 1;
-      this.totalPages = 100;
-      this.hideLoadingBar = false;
+    console.log("Resetting values.");
+    this.elements = [];
+    this.currentPage = 1;
+    this.totalPages = 100;
+    this.hideLoadingBar = false;
 
-      console.log("Subscribing...");
-      this.currentSubscription = observable.subscribe(page => {
+    console.log("Subscribing...");
+    this.currentSubscription = observable.subscribe(page => {
       console.log(page);
 
       this.currentPage = page.page;
