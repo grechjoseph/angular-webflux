@@ -23,6 +23,8 @@ return webClient
 
 <h2>Consuming Flux Endpoint using ReactiveFeign</h2>
 
+The code below demonstrates how to use Playtika ReactiveFeign to consume a Reactive endpoint without waiting for the whole response, but rather translate it to a Flux immediately.
+
 ``` xml
 // To enable a WebClient-based Reactive Feign Implementations.
 <dependency>
