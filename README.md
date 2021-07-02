@@ -6,8 +6,7 @@
 <b>Signal</b>: When a Mono or Flux emits an event, this is also referred to as a Signal.<br/>
 
 <h2>Consuming Flux Endpoint using WebClient</h2>
-```
-// Initialize your WebClient.
+``` java
 final WebClient webClient = WebClient.create("<url>");
 return webClient
         .post()
@@ -21,7 +20,7 @@ return webClient
 
 <h2>Consuming Flux Endpoint using ReactiveFeign</h2>
 
-```
+``` xml
 // To enable a WebClient-based Reactive Feign Implementations.
 <dependency>
     <groupId>com.playtika.reactivefeign</groupId>
@@ -37,7 +36,7 @@ return webClient
 </dependency>
 ```
 
-```
+``` java
 @ReactiveFeignClient(
         name = "<client-name>",
         url = "<client-url>"
@@ -50,7 +49,7 @@ public interface MyReactiveFeignClient {
 }
 ```
 
-```
+``` java
 @EnableReactiveFeignClients(clients = {
         MyClient.class
 })
@@ -61,8 +60,8 @@ public class ReactiveFeignConfig {
 }
 ```
 
-```
-<class level: Bean of type MyClient>
+``` java
+// <class level: Bean of type MyClient>
 
 final Flux<Object> pageFlux = myClient.myEndPoint(request)
     // What to log on each signal.
