@@ -7,6 +7,7 @@
 
 <h2>Consuming Flux Endpoint using WebClient</h2>
 ```
+// Initialize your WebClient.
 final WebClient webClient = WebClient.create("<url>");
 return webClient
         .post()
